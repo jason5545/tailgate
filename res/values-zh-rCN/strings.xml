@@ -28,7 +28,7 @@
     <string name="chip_port_unset">未固定</string>
     <string name="chip_boot_on">开机自动 ✓</string>
     <string name="chip_boot_off">开机未设置</string>
-    <string name="chip_count">tun0 放行 %1$d 个包　·　拦截 %2$d 个包</string>
+    <string name="chip_count">Tailscale 放行 %1$d 个包　·　拦截 %2$d 个包</string>
 
     <!-- 开关 -->
     <string name="switch_rule_title">只放行 Tailscale</string>

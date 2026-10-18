@@ -381,6 +381,11 @@ public class MainActivity extends Activity {
             if (canAct) {
                 try {
                     s = Rules.snapshot();
+                    // 舊版開機腳本寫死 tun0，Tailscale 換到 tun1 後重開機會把自己擋在外面：自動換成新版
+                    if (s.bootOutdated) {
+                        log(Rules.installBootScript());
+                        s = Rules.snapshot();
+                    }
                 } catch (Throwable ignored) {
                 }
             }

@@ -28,7 +28,7 @@
     <string name="chip_port_unset">unset</string>
     <string name="chip_boot_on">Boot auto ✓</string>
     <string name="chip_boot_off">Boot not set</string>
-    <string name="chip_count">tun0 allowed %1$d · blocked %2$d packets</string>
+    <string name="chip_count">Tailscale allowed %1$d · blocked %2$d packets</string>
 
     <!-- Switches -->
     <string name="switch_rule_title">Tailscale only</string>

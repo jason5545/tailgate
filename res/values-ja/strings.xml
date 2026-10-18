@@ -32,7 +32,7 @@
     <string name="chip_port_unset">未固定</string>
     <string name="chip_boot_on">起動時自動 ✓</string>
     <string name="chip_boot_off">起動時未設定</string>
-    <string name="chip_count">tun0 許可 %1$d パケット · 遮断 %2$d パケット</string>
+    <string name="chip_count">Tailscale 許可 %1$d パケット · 遮断 %2$d パケット</string>
 
     <!-- スイッチ -->
     <string name="switch_rule_title">Tailscale のみ許可</string>

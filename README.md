@@ -22,7 +22,7 @@ Tailscale 只解決了「怎麼連得到」，沒解決「誰連得到」。
 
 | 層 | 做什麼 | 效果 |
 |---|---|---|
-| **iptables** | `tun0` 的 5555 放行，其餘全部 DROP | 只有 tailnet 內的封包進得來 |
+| **iptables / ip6tables** | `tun+`（Tailscale 的 VPN 介面）的 5555 放行，其餘全部 DROP | 只有 tailnet 內的封包進得來 |
 | **`ro.adb.secure=0`** | 讓 `adbd` 根本不發授權請求 | 連進來就直接可用，不用再按允許 |
 
 兩層合起來，才等於「只有我的 tailnet 能連，而且連了就直接進」。
@@ -45,7 +45,7 @@ App 裡的「自動接受連線」開關**預設是鎖住的**，必須先開啟
 
 - **防護中** / **未防護** — 一眼看目前有沒有在擋
 - `Tailscale 100.x.x.x` · `埠 5555` · `開機自動 ✓` — 三個狀態膠囊
-- `tun0 放行 N 包 · 攔截 N 包` — iptables 的實際計數，不是估算
+- `Tailscale 放行 N 包 · 攔截 N 包` — iptables 與 ip6tables 的實際計數加總，不是估算
 - 兩個開關：只放行 Tailscale、自動接受連線
 - 一顆主要動作按鈕 + 開機腳本按鈕
 
@@ -135,10 +135,16 @@ Shizuku 13.x 把 `Shizuku.newProcess()` 從 public 收成 private。本專案的
 
 ```
 iptables -I INPUT -p tcp --dport 5555 -j DROP          # 先插 DROP
-iptables -I INPUT 1 -i tun0 -p tcp --dport 5555 -j ACCEPT  # 再把 ACCEPT 插到最前面
+iptables -I INPUT 1 -i tun+ -p tcp --dport 5555 -j ACCEPT  # 再把 ACCEPT 插到最前面
 ```
 
-順序反了會把自己鎖在外面。每條指令都先 `-D` 再 `-I`，所以重複執行不會疊規則。
+順序反了會把自己鎖在外面。每條指令都先 `-D` 再 `-I`，所以重複執行不會疊規則。`ip6tables` 套同樣兩條。
+
+### 為什麼是 `tun+` 不是 `tun0`
+
+Tailscale 重建 VPN 時介面會換名字（logcat：`Established by com.tailscale.ipn on tun1`）。1.0.0 寫死 `tun0`，換名之後 5555 的封包全部落到 DROP，adb 卡死、連線逾時，要手動關掉防護才救得回來。`tun+` 是 iptables 的萬用字元，比對所有 tun 介面；Android 同一時間只會有一個 VPN，所以範圍不會變大。
+
+套用時也會順手刪掉 1.0.0 留下的 `tun0` 規則；app 偵測到舊版開機腳本會自動重寫。
 
 ---
 
@@ -148,16 +154,17 @@ iptables -I INPUT 1 -i tun0 -p tcp --dport 5555 -j ACCEPT  # 再把 ACCEPT 插�
 
 1. 等 `sys.boot_completed`
 2. 設 `persist.adb.tcp.port=5555`
-3. 等 `tun0` 出現（最多 120 秒）
-4. 重套 iptables 規則
-5. **只有在旗標檔 `/data/adb/adbguard_autoaccept` 存在時**才把 `ro.adb.secure` 設 0
+3. 重套 iptables 與 ip6tables 規則（`tun+` 不需要介面已經存在，不用等 Tailscale 起來）
+4. **只有在旗標檔 `/data/adb/adbguard_autoaccept` 存在時**才把 `ro.adb.secure` 設 0
 
-第 5 點的條件很重要：你把自動接受關掉，重開機後它不會被偷偷打開。
+第 4 點的條件很重要：你把自動接受關掉，重開機後它不會被偷偷打開。
+
+關掉「只放行 Tailscale」時，自動接受也會一起關掉（刪旗標、`ro.adb.secure` 設回 1）。沒有第一層，免授權就等於對全網開放 root shell。
 
 ## 已知限制
 
 - **`ro.adb.secure` 是 runtime 值**，靠 `resetprop` 改，不是 persist 分區。重開機後要靠開機腳本重新套用，所以那個腳本不能刪。
-- **只處理 IPv4。** IPv6 的 5555 沒有擋。如果你的電信商給了公網 IPv6 位址，那是個缺口。要補的話 `ip6tables` 同樣兩條規則。
+- **既有的 adb 連線在 Tailscale 重建 VPN 後可能卡住。** 新連線會被放行，舊的 TCP 連線要在電腦端 `adb disconnect` 再 `adb connect`。
 - **不在 tailnet 上就完全進不來。** 這是設計，但重開機後如果 Tailscale 沒起來，只能靠 USB。
 - **`resetprop` 的路徑**：預設找 `/data/adb/ksu/bin/resetprop`，找不到退回 `command -v`。Magisk 環境的路徑不同但也能找到。
 - 沒有測試套件。這是個人在用的工具，驗證靠實際連線測試（見下）。
@@ -169,14 +176,14 @@ iptables -I INPUT 1 -i tun0 -p tcp --dport 5555 -j ACCEPT  # 再把 ACCEPT 插�
 ```bash
 # 1. 規則在不在
 adb shell su -c 'iptables -L INPUT -v -n --line-numbers | head -4'
-# 預期：ACCEPT tun0 dpt:5555 在前，DROP dpt:5555 在後
+# 預期：ACCEPT tun+ dpt:5555 在前，DROP dpt:5555 在後（ip6tables 同樣）
 
 # 2. 免授權連線（殺掉 server 模擬全新 client）
 adb kill-server && adb start-server && adb connect <ip>:5555
 adb shell 'echo OK; id -u'
 # 預期：OK / 0，中間不跳任何授權對話框
 
-# 3. 非 tun0 來源被擋
+# 3. 非 tun 介面來源被擋
 adb shell su -c 'nc -z -w 3 <手機自己的公網IP> 5555; echo $?'
 # 預期：Timeout，且 DROP 計數會增加
 ```
