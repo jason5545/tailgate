@@ -29,6 +29,8 @@
     <string name="chip_boot_on">Boot auto ✓</string>
     <string name="chip_boot_off">Boot not set</string>
     <string name="chip_count">Tailscale allowed %1$d · blocked %2$d packets</string>
+    <string name="chip_watch_on">Auto-repair running · reset stale connections %1$d times</string>
+    <string name="chip_watch_off">Auto-repair not running</string>
 
     <!-- Switches -->
     <string name="switch_rule_title">Tailscale only</string>

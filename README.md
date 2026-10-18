@@ -46,6 +46,7 @@ App 裡的「自動接受連線」開關**預設是鎖住的**，必須先開啟
 - **防護中** / **未防護** — 一眼看目前有沒有在擋
 - `Tailscale 100.x.x.x` · `埠 5555` · `開機自動 ✓` — 三個狀態膠囊
 - `Tailscale 放行 N 包 · 攔截 N 包` — iptables 與 ip6tables 的實際計數加總，不是估算
+- `自動修復運作中 · 已重置舊連線 N 次` — 守護程式的狀態（見下）
 - 兩個開關：只放行 Tailscale、自動接受連線
 - 一顆主要動作按鈕 + 開機腳本按鈕
 
@@ -146,6 +147,19 @@ Tailscale 重建 VPN 時介面會換名字（logcat：`Established by com.tailsc
 
 套用時也會順手刪掉 1.0.0 留下的 `tun0` 規則；app 偵測到舊版開機腳本會自動重寫。
 
+### 自動修復
+
+`tun+` 解決了新連線，但 Tailscale 重建 VPN 之後，**原本那條 adb 連線**還是會卡住：手機上的舊 socket 不會自己斷，電腦端的 adb 停在重傳，一卡就是好幾分鐘。
+
+啟用防護時，Tailgate 會在背景開一個 root 守護程式（`/data/adb/tailgate/watch.sh`）：
+
+- 每 2 秒看一次 tun 介面（只讀 `/sys/class/net/tun*/ifindex`，不開新程序）。介面換了，就用 `ss -K` 砍掉 5555 上的舊連線。電腦端的 adb 收到 RST 會自己重連，實測 2 秒內恢復，`adb devices` 不會掉線。
+- 每 30 秒確認一次規則，被別的東西清掉就補回來。
+- 只在旗標檔 `/data/adb/tailgate/protect` 存在時運作。關掉防護時會先刪旗標、停掉守護程式，再移除規則，不會跟你搶。
+- 事件寫在 `/data/adb/tailgate/watch.log`，超過 32 KB 只留最後 100 行。
+
+Android 內建的 `ss` 是 iproute2-ss171113，`ss -K` 加上 `state` 條件會 segfault，所以只用 `sport = :5555` 過濾。
+
 ---
 
 ## 開機自動套用
@@ -155,16 +169,17 @@ Tailscale 重建 VPN 時介面會換名字（logcat：`Established by com.tailsc
 1. 等 `sys.boot_completed`
 2. 設 `persist.adb.tcp.port=5555`
 3. 重套 iptables 與 ip6tables 規則（`tun+` 不需要介面已經存在，不用等 Tailscale 起來）
-4. **只有在旗標檔 `/data/adb/adbguard_autoaccept` 存在時**才把 `ro.adb.secure` 設 0
+4. 啟動自動修復的守護程式
+5. **只有在旗標檔 `/data/adb/adbguard_autoaccept` 存在時**才把 `ro.adb.secure` 設 0
 
-第 4 點的條件很重要：你把自動接受關掉，重開機後它不會被偷偷打開。
+第 5 點的條件很重要：你把自動接受關掉，重開機後它不會被偷偷打開。
 
 關掉「只放行 Tailscale」時，自動接受也會一起關掉（刪旗標、`ro.adb.secure` 設回 1）。沒有第一層，免授權就等於對全網開放 root shell。
 
 ## 已知限制
 
 - **`ro.adb.secure` 是 runtime 值**，靠 `resetprop` 改，不是 persist 分區。重開機後要靠開機腳本重新套用，所以那個腳本不能刪。
-- **既有的 adb 連線在 Tailscale 重建 VPN 後可能卡住。** 新連線會被放行，舊的 TCP 連線要在電腦端 `adb disconnect` 再 `adb connect`。
+- **自動修復只看 tun 介面有沒有換。** 介面沒換、但連線因為別的原因卡住（例如底層網路長時間斷線），還是要在電腦端 `adb disconnect` 再 `adb connect`。
 - **不在 tailnet 上就完全進不來。** 這是設計，但重開機後如果 Tailscale 沒起來，只能靠 USB。
 - **`resetprop` 的路徑**：預設找 `/data/adb/ksu/bin/resetprop`，找不到退回 `command -v`。Magisk 環境的路徑不同但也能找到。
 - 沒有測試套件。這是個人在用的工具，驗證靠實際連線測試（見下）。

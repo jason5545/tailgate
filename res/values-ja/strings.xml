@@ -33,6 +33,8 @@
     <string name="chip_boot_on">起動時自動 ✓</string>
     <string name="chip_boot_off">起動時未設定</string>
     <string name="chip_count">Tailscale 許可 %1$d パケット · 遮断 %2$d パケット</string>
+    <string name="chip_watch_on">自動修復 動作中 · 古い接続をリセット %1$d 回</string>
+    <string name="chip_watch_off">自動修復 停止中</string>
 
     <!-- スイッチ -->
     <string name="switch_rule_title">Tailscale のみ許可</string>

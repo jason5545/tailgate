@@ -457,7 +457,10 @@ public class MainActivity extends Activity {
                 ? getString(R.string.chip_boot_on) : getString(R.string.chip_boot_off));
 
         if (s != null) {
-            chipCount.setText(getString(R.string.chip_count, s.allowed, s.blocked));
+            chipCount.setText(getString(R.string.chip_count, s.allowed, s.blocked) + "\n"
+                    + (s.watching
+                    ? getString(R.string.chip_watch_on, s.resets)
+                    : getString(R.string.chip_watch_off)));
         } else {
             chipCount.setText("");
         }

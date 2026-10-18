@@ -29,6 +29,8 @@
     <string name="chip_boot_on">開機自動 ✓</string>
     <string name="chip_boot_off">開機未設</string>
     <string name="chip_count">Tailscale 放行 %1$d 包　·　攔截 %2$d 包</string>
+    <string name="chip_watch_on">自動修復運作中　·　已重置舊連線 %1$d 次</string>
+    <string name="chip_watch_off">自動修復未運作</string>
 
     <!-- 開關 -->
     <string name="switch_rule_title">只放行 Tailscale</string>
