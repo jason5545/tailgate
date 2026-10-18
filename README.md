@@ -6,6 +6,8 @@
 
 不用 root、不用 KernelSU 模組，只要 Shizuku 以 root 身分執行（Shizuku 從 root 啟動時 server 就是 UID 0）。
 
+**[⬇ 下載 APK](https://github.com/jason5545/tailgate/releases/latest)** · Android 8.0+ · 57 KB
+
 ---
 
 ## 問題
@@ -75,6 +77,10 @@ Material 3 Expressive 風格：tonal palette、彈性按壓回饋、圓角卡片
 
 ## 安裝
 
+從 [Releases](https://github.com/jason5545/tailgate/releases/latest) 下載 `tailgate-*.apk` 直接安裝（需要允許安裝未知來源）。
+
+或自己建置：
+
 ```bash
 # 建置
 export ANDROID_HOME=/path/to/android-sdk
@@ -85,7 +91,7 @@ export JAVA_HOME=/path/to/jdk
 adb install -r tailgate.apk
 ```
 
-或用 [Releases](../../releases) 裡的 APK。
+> 發布的 APK 是 **debug 簽章**。自己重新建置會產生不同的簽章，要從舊版升級得先解除安裝。
 
 ## 使用
 
