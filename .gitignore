@@ -1,0 +1,14 @@
+# 建置產物
+build/
+*.apk
+*.idsig
+
+# 簽章金鑰（不要進版控）
+*.keystore
+*.jks
+
+# 編輯器
+.idea/
+*.iml
+.vscode/
+.DS_Store
