@@ -1,4 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Tailgate</string>
+
+    <!-- Header -->
+    <string name="kicker">TAILGATE</string>
+    <string name="title">The door only your tailnet opens</string>
+    <string name="subtitle">ADB 5555 accepts Tailscale only. Everything else gets dropped.</string>
+
+    <!-- Hero states -->
+    <string name="state_checking">Checking…</string>
+    <string name="state_no_shizuku">Shizuku offline</string>
+    <string name="sub_no_shizuku">Open the Shizuku app and start the service</string>
+    <string name="state_waiting">Waiting for permission</string>
+    <string name="sub_waiting">Tap the button below to grant Shizuku access</string>
+    <string name="state_no_root">Not enough privileges</string>
+    <string name="sub_no_root">Shizuku must run as root (currently UID %1$d)</string>
+    <string name="state_protected">Protected</string>
+    <string name="sub_protected">Only your tailnet can get in</string>
+    <string name="sub_protected_accept">Only your tailnet can get in, no prompt</string>
+    <string name="state_open">Wide open</string>
+    <string name="sub_open">Port 5555 is open to every source</string>
+
+    <!-- Status chips -->
+    <string name="chip_tun">Tailscale %1$s</string>
+    <string name="chip_tun_offline">offline</string>
+    <string name="chip_port">Port %1$s</string>
+    <string name="chip_port_unset">unset</string>
+    <string name="chip_boot_on">Boot auto ✓</string>
+    <string name="chip_boot_off">Boot not set</string>
+    <string name="chip_count">tun0 allowed %1$d · blocked %2$d packets</string>
+
+    <!-- Switches -->
+    <string name="switch_rule_title">Tailscale only</string>
+    <string name="switch_rule_sub">Block every other source on 5555</string>
+    <string name="switch_accept_title">Accept connections</string>
+    <string name="switch_accept_sub">Machines on your tailnet connect without a prompt</string>
+    <string name="switch_accept_sub_locked">Enable “Tailscale only” first</string>
+
+    <!-- Buttons -->
+    <string name="btn_grant">Grant Shizuku access</string>
+    <string name="btn_shizuku_off">Shizuku not running</string>
+    <string name="btn_enable">Enable protection</string>
+    <string name="btn_reapply">Reapply rules</string>
+    <string name="btn_boot_install">Install boot script</string>
+    <string name="btn_boot_update">Update boot script</string>
+
+    <!-- Log -->
+    <string name="log_label">LOG</string>
+    <string name="log_empty">(no activity yet)</string>
+
+    <!-- Toasts -->
+    <string name="toast_granted">Granted</string>
+    <string name="toast_denied">Permission denied</string>
+    <string name="toast_shizuku_down">Shizuku is not running — start it first</string>
+    <string name="toast_shizuku_down_short">Shizuku is not running</string>
+    <string name="toast_no_permission">Not granted yet</string>
+    <string name="toast_not_root">Shizuku is not root (UID %1$d)</string>
+    <string name="toast_rule_applied">Now Tailscale only</string>
+    <string name="toast_rule_removed">Back to open access</string>
+    <string name="toast_rule_first">Enable “Tailscale only” first</string>
+    <string name="toast_accept_on">On: tailnet connects without a prompt</string>
+    <string name="toast_accept_off">Off: authorization prompts restored</string>
+    <string name="toast_done">Done</string>
+    <string name="toast_boot_ok">Boot script installed</string>
+    <string name="toast_boot_fail">Write failed — check the log</string>
+
+    <!-- Log lines -->
+    <string name="log_apply_rule">Applying “Tailscale only”…</string>
+    <string name="log_remove_rule">Removing “Tailscale only”…</string>
+    <string name="log_accept_refused">Refused: layer 1 is not active — enabling this would expose a passwordless ADB to the whole network</string>
+    <string name="log_accept_on">Enabling accept-all…</string>
+    <string name="log_accept_off">Disabling accept-all…</string>
+    <string name="log_applying">Applying rules and pinning the port…</string>
+    <string name="log_writing_boot">Writing boot script…</string>
+    <string name="chip_tun_short">Tailscale</string>
+    <string name="chip_port_short">Port</string>
+    <string name="chip_boot_short">Boot</string>
 </resources>

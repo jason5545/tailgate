@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Tailgate</string>
+
+    <!-- 標題 -->
+    <string name="kicker">TAILGATE</string>
+    <string name="title">只為 tailnet 開的門</string>
+    <string name="subtitle">ADB 5555 只放行 Tailscale，其他人一律擋掉。</string>
+
+    <!-- 狀態 -->
+    <string name="state_checking">檢查中…</string>
+    <string name="state_no_shizuku">Shizuku 未連線</string>
+    <string name="sub_no_shizuku">先開啟 Shizuku app 並啟動服務</string>
+    <string name="state_waiting">等待授權</string>
+    <string name="sub_waiting">點下方按鈕授予 Shizuku 權限</string>
+    <string name="state_no_root">權限不足</string>
+    <string name="sub_no_root">Shizuku 需以 root 執行（目前 UID %1$d）</string>
+    <string name="state_protected">防護中</string>
+    <string name="sub_protected">只有 tailnet 進得來</string>
+    <string name="sub_protected_accept">只有 tailnet 進得來，且免授權</string>
+    <string name="state_open">門戶大開</string>
+    <string name="sub_open">5555 對所有來源開放中</string>
+
+    <!-- 狀態膠囊 -->
+    <string name="chip_tun">Tailscale %1$s</string>
+    <string name="chip_tun_offline">未連線</string>
+    <string name="chip_port">埠 %1$s</string>
+    <string name="chip_port_unset">未固定</string>
+    <string name="chip_boot_on">開機自動 ✓</string>
+    <string name="chip_boot_off">開機未設</string>
+    <string name="chip_count">tun0 放行 %1$d 包　·　攔截 %2$d 包</string>
+
+    <!-- 開關 -->
+    <string name="switch_rule_title">只放行 Tailscale</string>
+    <string name="switch_rule_sub">封鎖 5555 的其他來源</string>
+    <string name="switch_accept_title">自動接受連線</string>
+    <string name="switch_accept_sub">tailnet 內的機器連進來不用再按允許</string>
+    <string name="switch_accept_sub_locked">需先開啟「只放行 Tailscale」</string>
+
+    <!-- 按鈕 -->
+    <string name="btn_grant">取得 Shizuku 授權</string>
+    <string name="btn_shizuku_off">Shizuku 未啟動</string>
+    <string name="btn_enable">立即啟用防護</string>
+    <string name="btn_reapply">重新套用規則</string>
+    <string name="btn_boot_install">寫入開機自動套用</string>
+    <string name="btn_boot_update">更新開機腳本</string>
+
+    <!-- 紀錄 -->
+    <string name="log_label">紀錄</string>
+    <string name="log_empty">（尚無動作）</string>
+
+    <!-- 提示 -->
+    <string name="toast_granted">已授權</string>
+    <string name="toast_denied">授權被拒絕</string>
+    <string name="toast_shizuku_down">Shizuku 沒在跑，先開 Shizuku 啟動它</string>
+    <string name="toast_shizuku_down_short">Shizuku 沒在跑</string>
+    <string name="toast_no_permission">還沒授權</string>
+    <string name="toast_not_root">Shizuku 不是 root（UID %1$d）</string>
+    <string name="toast_rule_applied">已只放行 Tailscale</string>
+    <string name="toast_rule_removed">已恢復全開</string>
+    <string name="toast_rule_first">先開啟「只放行 Tailscale」再開自動接受</string>
+    <string name="toast_accept_on">已開啟：tailnet 連線免授權</string>
+    <string name="toast_accept_off">已關閉：恢復授權確認</string>
+    <string name="toast_done">完成</string>
+    <string name="toast_boot_ok">開機腳本已寫入</string>
+    <string name="toast_boot_fail">寫入失敗，看紀錄</string>
+
+    <!-- 紀錄行 -->
+    <string name="log_apply_rule">套用「只放行 Tailscale」…</string>
+    <string name="log_remove_rule">移除「只放行 Tailscale」…</string>
+    <string name="log_accept_refused">拒絕開啟自動接受：第一層規則未生效，否則等於全網無密碼 ADB</string>
+    <string name="log_accept_on">開啟自動接受…</string>
+    <string name="log_accept_off">關閉自動接受…</string>
+    <string name="log_applying">套用規則並固定埠號…</string>
+    <string name="log_writing_boot">寫入開機腳本…</string>
+    <string name="chip_tun_short">Tailscale</string>
+    <string name="chip_port_short">埠</string>
+    <string name="chip_boot_short">開機</string>
+</resources>

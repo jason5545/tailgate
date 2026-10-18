@@ -47,7 +47,7 @@ public class MainActivity extends Activity {
 
     private final Shizuku.OnRequestPermissionResultListener permListener =
             (code, result) -> {
-                toast(result == 0 ? "已授權" : "授權被拒絕");
+                toast(result == 0 ? getString(R.string.toast_granted) : getString(R.string.toast_denied));
                 refresh();
             };
 
@@ -101,15 +101,15 @@ public class MainActivity extends Activity {
         scroll.addView(root);
 
         // ---- 標題 ----
-        TextView kicker = Ui.text(this, "TAILGATE", 12f, Ui.onSurfaceVariant(this), true);
+        TextView kicker = Ui.text(this, getString(R.string.kicker), 12f, Ui.onSurfaceVariant(this), true);
         kicker.setLetterSpacing(0.16f);
         root.addView(kicker);
 
-        TextView title = Ui.text(this, "只為 tailnet 開的門", 32f, Ui.onSurface(this), true);
+        TextView title = Ui.text(this, getString(R.string.title), 32f, Ui.onSurface(this), true);
         title.setPadding(0, Ui.dp(this, 6), 0, 0);
         root.addView(title);
 
-        TextView sub = Ui.text(this, "ADB 5555 只放行 Tailscale，其他人一律擋掉。",
+        TextView sub = Ui.text(this, getString(R.string.subtitle),
                 14f, Ui.onSurfaceVariant(this), false);
         sub.setPadding(0, Ui.dp(this, 8), 0, Ui.dp(this, 20));
         root.addView(sub);
@@ -130,7 +130,7 @@ public class MainActivity extends Activity {
         LinearLayout heroTexts = new LinearLayout(this);
         heroTexts.setOrientation(LinearLayout.VERTICAL);
         heroTexts.setPadding(Ui.dp(this, 10), 0, 0, 0);
-        heroState = Ui.text(this, "檢查中…", 22f, Ui.onPrimaryContainer(this), true);
+        heroState = Ui.text(this, getString(R.string.state_checking), 22f, Ui.onPrimaryContainer(this), true);
         heroSub = Ui.text(this, "", 13f, Ui.onPrimaryContainer(this), false);
         heroTexts.addView(heroState);
         heroTexts.addView(heroSub);
@@ -142,9 +142,9 @@ public class MainActivity extends Activity {
         LinearLayout chips = new LinearLayout(this);
         chips.setOrientation(LinearLayout.HORIZONTAL);
         chips.setPadding(0, Ui.dp(this, 14), 0, 0);
-        chipTun = chip("Tailscale");
-        chipPort = chip("埠");
-        chipBoot = chip("開機");
+        chipTun = chip(getString(R.string.chip_tun_short));
+        chipPort = chip(getString(R.string.chip_port_short));
+        chipBoot = chip(getString(R.string.chip_boot_short));
         chips.addView(chipTun, chipLp());
         chips.addView(chipPort, chipLp());
         chips.addView(chipBoot, chipLp());
@@ -167,8 +167,8 @@ public class MainActivity extends Activity {
         row1.setGravity(Gravity.CENTER_VERTICAL);
         LinearLayout col1 = new LinearLayout(this);
         col1.setOrientation(LinearLayout.VERTICAL);
-        col1.addView(Ui.text(this, "只放行 Tailscale", 17f, Ui.onSurface(this), true));
-        col1.addView(Ui.text(this, "封鎖 5555 的其他來源", 13f, Ui.onSurfaceVariant(this), false));
+        col1.addView(Ui.text(this, getString(R.string.switch_rule_title), 17f, Ui.onSurface(this), true));
+        col1.addView(Ui.text(this, getString(R.string.switch_rule_sub), 13f, Ui.onSurfaceVariant(this), false));
         row1.addView(col1, new LinearLayout.LayoutParams(0,
                 ViewGroup.LayoutParams.WRAP_CONTENT, 1f));
         toggleRule = new Ui.Toggle(this);
@@ -185,8 +185,8 @@ public class MainActivity extends Activity {
         row2.setGravity(Gravity.CENTER_VERTICAL);
         LinearLayout col2 = new LinearLayout(this);
         col2.setOrientation(LinearLayout.VERTICAL);
-        col2.addView(Ui.text(this, "自動接受連線", 17f, Ui.onSurface(this), true));
-        toggleAcceptSub = Ui.text(this, "tailnet 內的機器連進來不用再按允許",
+        col2.addView(Ui.text(this, getString(R.string.switch_accept_title), 17f, Ui.onSurface(this), true));
+        toggleAcceptSub = Ui.text(this, getString(R.string.switch_accept_sub),
                 13f, Ui.onSurfaceVariant(this), false);
         col2.addView(toggleAcceptSub);
         row2.addView(col2, new LinearLayout.LayoutParams(0,
@@ -198,25 +198,25 @@ public class MainActivity extends Activity {
         switches.addView(row2);
 
         // ---- 動作 ----
-        btnPrimary = Ui.pill(this, "取得 Shizuku 授權", true);
+        btnPrimary = Ui.pill(this, getString(R.string.btn_grant), true);
         btnPrimary.setOnClickListener(v -> primaryAction());
         LinearLayout.LayoutParams plp = Ui.lpMatch();
         plp.topMargin = Ui.dp(this, 20);
         root.addView(btnPrimary, plp);
 
-        btnBoot = Ui.pill(this, "寫入開機自動套用", false);
+        btnBoot = Ui.pill(this, getString(R.string.btn_boot_install), false);
         btnBoot.setOnClickListener(v -> doBoot());
         LinearLayout.LayoutParams blp = Ui.lpMatch();
         blp.topMargin = Ui.dp(this, 10);
         root.addView(btnBoot, blp);
 
         // ---- 紀錄 ----
-        TextView logLabel = Ui.text(this, "紀錄", 12f, Ui.onSurfaceVariant(this), true);
+        TextView logLabel = Ui.text(this, getString(R.string.log_label), 12f, Ui.onSurfaceVariant(this), true);
         logLabel.setLetterSpacing(0.12f);
         logLabel.setPadding(Ui.dp(this, 2), Ui.dp(this, 28), 0, Ui.dp(this, 8));
         root.addView(logLabel);
 
-        logView = Ui.text(this, "（尚無動作）", 11.5f, Ui.onSurfaceVariant(this), false);
+        logView = Ui.text(this, getString(R.string.log_empty), 11.5f, Ui.onSurfaceVariant(this), false);
         logView.setTypeface(android.graphics.Typeface.MONOSPACE);
         logView.setTextIsSelectable(true);
         logView.setPadding(Ui.dp(this, 14), Ui.dp(this, 14), Ui.dp(this, 14), Ui.dp(this, 14));
@@ -270,7 +270,7 @@ public class MainActivity extends Activity {
 
     private void primaryAction() {
         if (!ShizukuBridge.isReady()) {
-            toast("Shizuku 沒在跑，先開 Shizuku 啟動它");
+            toast(getString(R.string.toast_shizuku_down));
             return;
         }
         if (!ShizukuBridge.hasPermission()) {
@@ -286,12 +286,12 @@ public class MainActivity extends Activity {
             return;
         }
         final boolean want = toggleRule.isChecked();
-        log(want ? "套用「只放行 Tailscale」…" : "移除「只放行 Tailscale」…");
+        log(want ? getString(R.string.log_apply_rule) : getString(R.string.log_remove_rule));
         io.execute(() -> {
             String out = want ? Rules.apply() : Rules.remove();
             log(out);
             refresh();
-            toast(want ? "已只放行 Tailscale" : "已恢復全開");
+            toast(want ? getString(R.string.toast_rule_applied) : getString(R.string.toast_rule_removed));
         });
     }
 
@@ -305,12 +305,12 @@ public class MainActivity extends Activity {
         // 安全互鎖：沒有第一層保護時，不准開自動接受
         if (want && last != null && !last.ruleActive) {
             toggleAccept.setChecked(false, true);
-            toast("先開啟「只放行 Tailscale」再開自動接受");
-            log("拒絕開啟自動接受：第一層規則未生效，否則等於全網無密碼 ADB");
+            toast(getString(R.string.toast_rule_first));
+            log(getString(R.string.log_accept_refused));
             return;
         }
 
-        log(want ? "開啟自動接受…" : "關閉自動接受…");
+        log(want ? getString(R.string.log_accept_on) : getString(R.string.log_accept_off));
         io.execute(() -> {
             String out = Rules.setAutoAccept(want);
             log(out);
@@ -319,13 +319,13 @@ public class MainActivity extends Activity {
                 Rules.installBootScript();
             }
             refresh();
-            toast(want ? "已開啟：tailnet 連線免授權" : "已關閉：恢復授權確認");
+            toast(want ? getString(R.string.toast_accept_on) : getString(R.string.toast_accept_off));
         });
     }
 
     private void doApplyRule() {
         if (!guardRoot()) return;
-        log("套用規則並固定埠號…");
+        log(getString(R.string.log_applying));
         io.execute(() -> {
             String a = Rules.apply();
             String p = Rules.setPersistPort();
@@ -335,32 +335,34 @@ public class MainActivity extends Activity {
                 log(Rules.installBootScript());
             }
             refresh();
-            toast("完成");
+            toast(getString(R.string.toast_done));
         });
     }
 
     private void doBoot() {
         if (!guardRoot()) return;
-        log("寫入開機腳本…");
+        log(getString(R.string.log_writing_boot));
         io.execute(() -> {
             String out = Rules.installBootScript();
             log(out);
             refresh();
-            toast(out.contains("BOOT_OK") ? "開機腳本已寫入" : "寫入失敗，看紀錄");
+            toast(out.contains("BOOT_OK")
+                    ? getString(R.string.toast_boot_ok)
+                    : getString(R.string.toast_boot_fail));
         });
     }
 
     private boolean guardRoot() {
         if (!ShizukuBridge.isReady()) {
-            toast("Shizuku 沒在跑");
+            toast(getString(R.string.toast_shizuku_down_short));
             return false;
         }
         if (!ShizukuBridge.hasPermission()) {
-            toast("還沒授權");
+            toast(getString(R.string.toast_no_permission));
             return false;
         }
         if (ShizukuBridge.serverUid() != 0) {
-            toast("Shizuku 不是 root（UID=" + ShizukuBridge.serverUid() + "）");
+            toast(getString(R.string.toast_not_root, ShizukuBridge.serverUid()));
             return false;
         }
         return true;
@@ -400,24 +402,24 @@ public class MainActivity extends Activity {
 
         if (!ready) {
             dotColor = Ui.error(this);
-            state = "Shizuku 未連線";
-            sub = "先開啟 Shizuku app 並啟動服務";
+            state = getString(R.string.state_no_shizuku);
+            sub = getString(R.string.sub_no_shizuku);
         } else if (!perm) {
             dotColor = Ui.error(this);
-            state = "等待授權";
-            sub = "點下方按鈕授予 Shizuku 權限";
+            state = getString(R.string.state_waiting);
+            sub = getString(R.string.sub_waiting);
         } else if (uid != 0) {
             dotColor = Ui.error(this);
-            state = "權限不足";
-            sub = "Shizuku 需以 root 執行（目前 UID " + uid + "）";
+            state = getString(R.string.state_no_root);
+            sub = getString(R.string.sub_no_root, uid);
         } else if (s != null && s.ruleActive) {
             dotColor = Ui.success(this);
-            state = "防護中";
-            sub = s.autoAccept ? "只有 tailnet 進得來，且免授權" : "只有 tailnet 進得來";
+            state = getString(R.string.state_protected);
+            sub = getString(s.autoAccept ? R.string.sub_protected_accept : R.string.sub_protected);
         } else {
             dotColor = Ui.error(this);
-            state = "門戶大開";
-            sub = "5555 對所有來源開放中";
+            state = getString(R.string.state_open);
+            sub = getString(R.string.sub_open);
         }
 
         heroState.setText(state);
@@ -436,35 +438,39 @@ public class MainActivity extends Activity {
         toggleRule.setEnabled(canAct);
         toggleAccept.setEnabled(canAct && rule);
         toggleAcceptSub.setText(rule
-                ? "tailnet 內的機器連進來不用再按允許"
-                : "需先開啟「只放行 Tailscale」");
+                ? getString(R.string.switch_accept_sub)
+                : getString(R.string.switch_accept_sub_locked));
 
         // chips
-        String tun = (s != null && !TextUtils.isEmpty(s.tunIp)) ? s.tunIp : "未連線";
-        chipTun.setText("Tailscale " + tun);
-        chipPort.setText("埠 " + ((s != null && !TextUtils.isEmpty(s.persistPort))
-                ? s.persistPort : "未固定"));
-        chipBoot.setText((s != null && s.bootInstalled) ? "開機自動 ✓" : "開機未設");
+        String tun = (s != null && !TextUtils.isEmpty(s.tunIp))
+                ? s.tunIp : getString(R.string.chip_tun_offline);
+        chipTun.setText(getString(R.string.chip_tun, tun));
+        chipPort.setText(getString(R.string.chip_port,
+                (s != null && !TextUtils.isEmpty(s.persistPort))
+                        ? s.persistPort : getString(R.string.chip_port_unset)));
+        chipBoot.setText((s != null && s.bootInstalled)
+                ? getString(R.string.chip_boot_on) : getString(R.string.chip_boot_off));
 
         if (s != null) {
-            chipCount.setText("tun0 放行 " + s.allowed + " 包　·　攔截 " + s.blocked + " 包");
+            chipCount.setText(getString(R.string.chip_count, s.allowed, s.blocked));
         } else {
             chipCount.setText("");
         }
 
         // 主按鈕
         if (!ready) {
-            btnPrimary.setText("Shizuku 未啟動");
+            btnPrimary.setText(getString(R.string.btn_shizuku_off));
         } else if (!perm) {
-            btnPrimary.setText("取得 Shizuku 授權");
+            btnPrimary.setText(getString(R.string.btn_grant));
         } else if (!rule) {
-            btnPrimary.setText("立即啟用防護");
+            btnPrimary.setText(getString(R.string.btn_enable));
         } else {
-            btnPrimary.setText("重新套用規則");
+            btnPrimary.setText(getString(R.string.btn_reapply));
         }
         btnPrimary.setAlpha(canAct || !perm ? 1f : 0.6f);
 
-        btnBoot.setText((s != null && s.bootInstalled) ? "更新開機腳本" : "寫入開機自動套用");
+        btnBoot.setText((s != null && s.bootInstalled)
+                ? getString(R.string.btn_boot_update) : getString(R.string.btn_boot_install));
         btnBoot.setEnabled(canAct);
         btnBoot.setAlpha(canAct ? 1f : 0.4f);
     }
@@ -473,7 +479,7 @@ public class MainActivity extends Activity {
         if (s == null || s.trim().isEmpty()) return;
         ui.post(() -> {
             String prev = logView.getText().toString();
-            String body = prev.startsWith("（尚無") ? "" : prev;
+            String body = prev.startsWith(getString(R.string.log_empty)) ? "" : prev;
             String merged = s.trim() + (body.isEmpty() ? "" : "\n\n" + body);
             if (merged.length() > 4000) merged = merged.substring(0, 4000) + "\n…";
             logView.setText(merged);

@@ -49,6 +49,19 @@ App 裡的「自動接受連線」開關**預設是鎖住的**，必須先開啟
 
 Material 3 Expressive 風格：tonal palette、彈性按壓回饋、圓角卡片。深淺色自動跟隨系統。
 
+## 語言
+
+內建四種語言，跟隨系統設定（Android 13+ 也可在系統設定裡單獨指定本 App 的語言）：
+
+| 語言 | 資料夾 |
+|---|---|
+| English（預設） | `res/values/` |
+| 繁體中文 | `res/values-zh-rTW/` |
+| 简体中文 | `res/values-zh-rCN/` |
+| 日本語 | `res/values-ja/` |
+
+預設語言是英文，因為這是公開專案。要加新語言就在 `res/values-<locale>/strings.xml` 放一份翻譯，四個語言檔各有 60 條字串，缺漏的會自動退回英文。
+
 ---
 
 ## 需求
@@ -172,6 +185,10 @@ aidl/                        Shizuku 的 AIDL（從 Shizuku-API 取得）
   android/content/Intent.aidl
   moe/shizuku/server/*.aidl  IShizukuService 等
 libs/                        Shizuku API / provider AAR
+res/values/                  英文字串（預設）
+res/values-zh-rTW/           繁體中文
+res/values-zh-rCN/           简体中文
+res/values-ja/               日本語
 src/app/tailgate/
   MainActivity.java          UI 與事件
   Rules.java                 iptables / prop / 開機腳本

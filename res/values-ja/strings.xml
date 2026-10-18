@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Tailgate</string>
+
+    <!-- ヘッダー -->
+    <string name="kicker">TAILGATE</string>
+    <string name="title">あなたの tailnet だけが開ける扉</string>
+    <string name="subtitle">ADB 5555 は Tailscale のみ許可。それ以外はすべて破棄します。</string>
+
+    <!-- 状態 -->
+    <string name="state_checking">確認中…</string>
+    <string name="state_no_shizuku">Shizuku 未接続</string>
+    <string name="sub_no_shizuku">Shizuku アプリを開いてサービスを開始してください</string>
+    <string name="state_waiting">権限待ち</string>
+    <string name="sub_waiting">下のボタンを押して Shizuku へのアクセスを許可してください</string>
+    <string name="state_no_root">権限が足りません</string>
+    <string name="sub_no_root">Shizuku は root で動作している必要があります（現在の UID %1$d）</string>
+    <string name="state_protected">保護中</string>
+    <string name="sub_protected">tailnet からだけ接続できます</string>
+    <string name="sub_protected_accept">tailnet からだけ、確認なしで接続できます</string>
+    <string name="state_open">全開放</string>
+    <string name="sub_open">ポート 5555 がすべての送信元に開いています</string>
+
+    <!-- ステータスチップ -->
+    <string name="chip_tun_short">Tailscale</string>
+    <string name="chip_port_short">ポート</string>
+    <string name="chip_boot_short">起動</string>
+
+    <string name="chip_tun">Tailscale %1$s</string>
+    <string name="chip_tun_offline">未接続</string>
+    <string name="chip_port">ポート %1$s</string>
+    <string name="chip_port_unset">未固定</string>
+    <string name="chip_boot_on">起動時自動 ✓</string>
+    <string name="chip_boot_off">起動時未設定</string>
+    <string name="chip_count">tun0 許可 %1$d パケット · 遮断 %2$d パケット</string>
+
+    <!-- スイッチ -->
+    <string name="switch_rule_title">Tailscale のみ許可</string>
+    <string name="switch_rule_sub">5555 への他の送信元をすべて遮断</string>
+    <string name="switch_accept_title">接続を自動承認</string>
+    <string name="switch_accept_sub">tailnet 内の端末は確認なしで接続できます</string>
+    <string name="switch_accept_sub_locked">先に「Tailscale のみ許可」を有効にしてください</string>
+
+    <!-- ボタン -->
+    <string name="btn_grant">Shizuku の権限を許可</string>
+    <string name="btn_shizuku_off">Shizuku 未起動</string>
+    <string name="btn_enable">保護を有効にする</string>
+    <string name="btn_reapply">ルールを再適用</string>
+    <string name="btn_boot_install">起動時スクリプトを書き込む</string>
+    <string name="btn_boot_update">起動時スクリプトを更新</string>
+
+    <!-- ログ -->
+    <string name="log_label">ログ</string>
+    <string name="log_empty">（操作はまだありません）</string>
+
+    <!-- トースト -->
+    <string name="toast_granted">許可しました</string>
+    <string name="toast_denied">権限が拒否されました</string>
+    <string name="toast_shizuku_down">Shizuku が動作していません。先に起動してください</string>
+    <string name="toast_shizuku_down_short">Shizuku が動作していません</string>
+    <string name="toast_no_permission">まだ許可されていません</string>
+    <string name="toast_not_root">Shizuku が root ではありません（UID %1$d）</string>
+    <string name="toast_rule_applied">Tailscale のみ許可にしました</string>
+    <string name="toast_rule_removed">全開放に戻しました</string>
+    <string name="toast_rule_first">先に「Tailscale のみ許可」を有効にしてください</string>
+    <string name="toast_accept_on">オン：tailnet から確認なしで接続できます</string>
+    <string name="toast_accept_off">オフ：承認ダイアログに戻しました</string>
+    <string name="toast_done">完了</string>
+    <string name="toast_boot_ok">起動時スクリプトを書き込みました</string>
+    <string name="toast_boot_fail">書き込みに失敗しました。ログを確認してください</string>
+
+    <!-- ログ行 -->
+    <string name="log_apply_rule">「Tailscale のみ許可」を適用中…</string>
+    <string name="log_remove_rule">「Tailscale のみ許可」を解除中…</string>
+    <string name="log_accept_refused">自動承認を拒否：第 1 層が有効でないため、有効にするとネットワーク全体にパスワードなしの ADB を公開することになります</string>
+    <string name="log_accept_on">自動承認を有効化中…</string>
+    <string name="log_accept_off">自動承認を無効化中…</string>
+    <string name="log_applying">ルールを適用しポートを固定中…</string>
+    <string name="log_writing_boot">起動時スクリプトを書き込み中…</string>
+</resources>
